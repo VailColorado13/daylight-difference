@@ -64,7 +64,6 @@ async function asyncTest() {
   const todayDaylight = DaylightTodayObject.results.day_length.split(':')
   const tomorrowDaylight = DaylightTomorrowObject.results.day_length.split(':')
 
-
 //this constructor takes the data from the above api calls and calculates the total daylight in seconds
   function TotalTime(day) {
     this.seconds = Number(day[0]*60*60) + Number(day[1]*60) + Number(day[2])
@@ -122,7 +121,7 @@ else {
 
 //This section handles the daylight difference between today and tomorrow
 if (todayVStomorrow.todayLonger) {
-  if (todayVSyesterday.minutesDiff === 0) {
+  if (todayVStomorrow.minutesDiff === 0) {
     responseFieldTomorrow.innerText = `Tomorrow will be ${todayVStomorrow.secondsDiff} seconds shorter than today.`
 
 
@@ -132,7 +131,7 @@ if (todayVStomorrow.todayLonger) {
 
   } else {  
    if (todayVSyesterday.minutesDiff === 0) {
-    responseFieldTomorrow.innerText = `Tomorrow will be ${todayVStomorrow.secondsDiff} longer shorter than today.`
+    responseFieldTomorrow.innerText = `Tomorrow will be ${todayVStomorrow.secondsDiff} seconds longer than today.`
   }
   else {
     responseFieldTomorrow.innerText = `In  ${cleanOutput}, today is ${todayVSyesterday.minutesDiff}  ${todayVStomorrow.minutesDiff >  1 ? 'minutes' : 'minute'} and ${todayVSyesterday.secondsDiff} seconds longer than yesterday.`
