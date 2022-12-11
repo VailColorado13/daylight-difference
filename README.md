@@ -1,4 +1,4 @@
-# Daylight Differece 
+# Daylight Difference 
 ## Type in the name of any major city and see how much longer or shorter today is compared to yesterday and tomorrow!
 ## Try it out: https://daylightdifference.netlify.app/
 ## How it's Made 
