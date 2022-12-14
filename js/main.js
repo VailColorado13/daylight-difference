@@ -1,22 +1,7 @@
-//Get today, tomorrow, and yesterday's dates
-const today = new Date()
-const tomorrow = new Date();
-const yesterday = new Date();
-tomorrow.setDate(today.getDate() + 1)
-yesterday.setDate(today.getDate() - 1)
 
-function DateStr(date) {
-  this.day = String(date.getDate()).padStart(2, '0')
-  this.month = String(date.getMonth() + 1).padStart(2, '0')
-  this.year = String(date.getFullYear())
-  this.APIParam = `${this.year}-${this.month}-${this.day}`
-}
-
-const tomorrowStr = new DateStr(tomorrow)
-const yesterdayStr = new DateStr(yesterday)
 
 /////Event Listener for button click 
-document.querySelector('#location').addEventListener('click', asyncTest)
+document.querySelector('#location').addEventListener('click', clickHandler)
 
  
 
@@ -25,7 +10,7 @@ let options = {
   headers: { 'x-api-key': '1yz4ajqdQkffLCi+Mc7rSw==4p8tzPBBavrNR6bD' }
 }
 
-async function asyncTest() {
+async function clickHandler() {
 
   let input = document.querySelector('input').value.toLowerCase().replace(/\s/g, '-')
   let cleanOutput = input.replace(/\-/g, ' ').split(' ').map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`).join(' ').trim()
@@ -46,8 +31,13 @@ async function asyncTest() {
  
 //Now that we have the coords from the above API Call, we plug them into the next three API calls: 
   const daylightUrlToday = `https://api.sunrise-sunset.org/json?lat=${coords[0]}&lng=${coords[1]}&date=today`
-  const daylightUrlTomorrow = `https://api.sunrise-sunset.org/json?lat=${coords[0]}&lng=${coords[1]}&date=${tomorrowStr.APIParam}`
-  const daylightUrlYesterday = `https://api.sunrise-sunset.org/json?lat=${coords[0]}&lng=${coords[1]}&date=${yesterdayStr.APIParam}`
+ 
+
+  const daylightUrlTomorrow = `https://api.sunrise-sunset.org/json?lat=${coords[0]}&lng=${coords[1]}&date=tomorrow`
+
+ 
+  const daylightUrlYesterday = `https://api.sunrise-sunset.org/json?lat=${coords[0]}&lng=${coords[1]}&date=yesterday`
+
 
 
   const DaylightToday = await fetch(daylightUrlToday)
@@ -63,6 +53,7 @@ async function asyncTest() {
   const yesterdayDaylight =  DaylightYesterdayObject.results.day_length.split(':')
   const todayDaylight = DaylightTodayObject.results.day_length.split(':')
   const tomorrowDaylight = DaylightTomorrowObject.results.day_length.split(':')
+
 
 //this constructor takes the data from the above api calls and calculates the total daylight in seconds
   function TotalTime(day) {
@@ -89,7 +80,7 @@ function TimeDifference(today, testDay) {
 todayVSyesterday = new TimeDifference(todayTotalDaylight,yesterdayTotalDaylight)
 todayVStomorrow = new TimeDifference(todayTotalDaylight,tomorrowTotalDaylight)
 
-console.log(todayVSyesterday)
+console.log(todayVStomorrow)
 
 
 //remove the class .invisible from response area
@@ -104,7 +95,7 @@ if (!todayVSyesterday.todayLonger) {
   }
 
   else{
-  responseFieldYesterday.innerText = `In  ${cleanOutput}, today is ${todayVSyesterday.minutesDiff} ${todayVSyesterday.minutesDiff > 1 ? 'minutes' : 'minute'} and ${todayVSyesterday.secondsDiff} seconds shorter than yesterday.`
+  responseFieldYesterday.innerText = ` In  ${cleanOutput}, today is ${todayVSyesterday.minutesDiff} ${todayVSyesterday.minutesDiff > 1 ? 'minutes' : 'minute'} and ${todayVSyesterday.secondsDiff} seconds shorter than yesterday.`
    }
   
   }
@@ -134,7 +125,7 @@ if (todayVStomorrow.todayLonger) {
     responseFieldTomorrow.innerText = `Tomorrow will be ${todayVStomorrow.secondsDiff} seconds longer than today.`
   }
   else {
-    responseFieldTomorrow.innerText = `In  ${cleanOutput}, today is ${todayVSyesterday.minutesDiff}  ${todayVStomorrow.minutesDiff >  1 ? 'minutes' : 'minute'} and ${todayVSyesterday.secondsDiff} seconds longer than yesterday.`
+    responseFieldTomorrow.innerText =  `Tomorrow will be  ${todayVStomorrow.minutesDiff}  ${todayVStomorrow.minutesDiff >  1 ? 'minutes' : 'minute'} and ${todayVStomorrow.secondsDiff} seconds longer than yesterday.`
   }
 
 }
